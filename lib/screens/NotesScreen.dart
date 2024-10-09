@@ -13,7 +13,7 @@ class NotesScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(16)
         ),
             context: context, builder: (context){
-          return AddNote();
+          return AddNoteBottomSheet();
         });
       },child:
         Icon(Icons.add),),
