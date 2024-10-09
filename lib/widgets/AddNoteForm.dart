@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notesapp/cubits/AddNoteCubit.dart';
+import 'package:notesapp/cubits/AddNoteState.dart';
 import 'package:notesapp/models/note_model.dart';
 
 import 'CustomButton.dart';
@@ -15,9 +16,10 @@ class AddNoteForm extends StatefulWidget {
 }
 
 class _AddNoteFormState extends State<AddNoteForm> {
- final GlobalKey<FormState>formKey=GlobalKey();
- AutovalidateMode autovalidateMode =AutovalidateMode.disabled;
- String? title,subTitle;
+  final GlobalKey<FormState>formKey = GlobalKey();
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  String? title, subTitle;
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -29,8 +31,8 @@ class _AddNoteFormState extends State<AddNoteForm> {
             height: 32,
           ),
           CustomTextField(
-            onSaved: (value){
-              title=value;
+            onSaved: (value) {
+              title = value;
             },
             maxLines: 1,
             hintText: "Title",
@@ -39,8 +41,8 @@ class _AddNoteFormState extends State<AddNoteForm> {
             height: 20,
           ),
           CustomTextField(
-            onSaved: (value){
-              subTitle=value;
+            onSaved: (value) {
+              subTitle = value;
             },
             maxLines: 5,
             hintText: "Content",
@@ -48,20 +50,27 @@ class _AddNoteFormState extends State<AddNoteForm> {
           SizedBox(
             height: 20,
           ),
-          CustomButton(
-            onTap: (){
-              if(formKey.currentState!.validate()){
-                formKey.currentState!.save();
-                var noteModel=NoteModel(title: title!, subTitle: subTitle!, date: DateTime.now().toString(), color: Colors.blue.value);
-                BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
-              }
-              else{
-                autovalidateMode=AutovalidateMode.always;
-                setState(() {
+          BlocBuilder<AddNoteCubit, AddNoteState>(
+            builder: (context, state) {
+              return CustomButton(
+                isLoading: state is AddNoteLoading?true:false,
+                onTap: () {
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                    var noteModel = NoteModel(title: title!,
+                        subTitle: subTitle!,
+                        date: DateTime.now().toString(),
+                        color: Colors.blue.value);
+                    BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
+                  }
+                  else {
+                    autovalidateMode = AutovalidateMode.always;
+                    setState(() {
 
-                });
-              }
-
+                    });
+                  }
+                },
+              );
             },
           ),
         ],
