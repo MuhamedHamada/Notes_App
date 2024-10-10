@@ -36,7 +36,9 @@ final NoteModel note;
                 style: TextStyle(fontSize: 20,
                     color: Colors.black.withOpacity(.3)
                 ), ),
-              trailing: IconButton(onPressed: (){}, icon: Icon(Icons.delete),
+              trailing: IconButton(onPressed: (){
+                note.delete();
+              }, icon: Icon(Icons.delete),
               iconSize: 30,
               color: Colors.black,)
             ),
