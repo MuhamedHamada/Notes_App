@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart'; // تأكد من استيراد مكتبة Hive
+import 'package:hive/hive.dart';
 import '../models/note_model.dart';
 import '../widgets/constants.dart';
 import 'NotesState.dart';
