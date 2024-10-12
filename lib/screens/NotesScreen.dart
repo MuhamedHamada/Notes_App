@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:notesapp/cubits/NotesCubit.dart';
-import 'package:notesapp/widgets/NotesViewBody.dart';
+import '../cubits/AddNoteCubit.dart';  // تأكد من تضمين AddNoteCubit
+import '../cubits/NotesCubit.dart';
+import '../widgets/NotesViewBody.dart';
 import '../widgets/addNote.dart';
 
 class NotesScreen extends StatelessWidget {
@@ -9,27 +10,27 @@ class NotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NotesCubit()..fetchAllNotes(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              context: context,
-              builder: (context) {
-                return AddNoteBottomSheet();
-              },
-            );
-          },
-          child: Icon(Icons.add),
-        ),
-        body: NotesViewBody(),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            isScrollControlled: true,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            context: context,
+            builder: (context) {
+              return BlocProvider(
+                create: (context) => AddNoteCubit(), // توفير AddNoteCubit
+                child: AddNoteBottomSheet(),
+              );
+            },
+          );
+        },
+        child: Icon(Icons.add),
       ),
+      body: NotesViewBody(),
     );
   }
 }

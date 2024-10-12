@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notesapp/cubits/NotesCubit.dart';
 import 'package:notesapp/models/note_model.dart';
 import 'package:notesapp/screens/editNote.dart';
 
@@ -11,7 +13,9 @@ final NoteModel note;
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context){
-          return EditNote();
+          return EditNote(
+            note: note,
+          );
         }));
       },
       child: Container(
@@ -38,6 +42,7 @@ final NoteModel note;
                 ), ),
               trailing: IconButton(onPressed: (){
                 note.delete();
+                BlocProvider.of<NotesCubit>(context).fetchAllNotes();
               }, icon: Icon(Icons.delete),
               iconSize: 30,
               color: Colors.black,)
